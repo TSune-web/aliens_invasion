@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AliensInvasion:
     """Overall class to manage game assets & behaviour."""
@@ -26,14 +27,18 @@ class AliensInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
 
-    
+        self._create_fleet()
+
+
+    # Starting the game.
     def run_game(self):
         """Start the main loop for the game."""
         while True:
             self._check_events()
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()
             self._update_screen()
 
 
@@ -68,18 +73,37 @@ class AliensInvasion:
             self.ship.moving_down = False
 
 
+    # Methods for bullets.
     def _fire_bullet(self):
         """Create a new bullet & add it to the bullet group."""
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullet_limits:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
 
 
+    def _update_bullets(self):
+        """Update position of bullets & get rid of old bullets."""
+        self.bullets.update()
+        for bullet in self.bullets.copy():
+            if bullet.rect.left >= self.screen.get_rect().right:
+                self.bullets.remove(bullet)
+
+
+    # Methods for aliens
+    def _create_fleet(self):
+        """Create the fleet of aliens."""
+        alien = Alien(self)
+        self.aliens.add(alien)
+
+
+    # A method to draw and update objects in the game.
     def _update_screen(self):
         """Update images on the screen & flip to the new screen."""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         
         pygame.display.flip()
 
