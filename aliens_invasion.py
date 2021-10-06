@@ -93,8 +93,32 @@ class AliensInvasion:
     def _create_fleet(self):
         """Create the fleet of aliens."""
         alien = Alien(self)
-        self.aliens.add(alien)
+        alien_height, alien_width = alien.rect.size
+        available_space_y = self.settings.screen_height - (2 * alien_height)
+        number_aliens_y = available_space_y // (2 * alien_height)
 
+        # Determine the number of columns of aliens
+        ship_width = self.ship.rect.width
+        available_space_x = (
+            self.settings.screen_width - (2 * alien_width) - ship_width)
+        number_cols = available_space_x // (alien_width + 30)
+
+        # Create the full fleet of aliens
+        for col_number in range(number_cols):
+            for alien_number in range(number_aliens_y):
+                self._create_alien(alien_number, col_number)
+            
+
+    def _create_alien(self, alien_number, col_number):
+        """Create an alien & place it in the column."""
+        alien = Alien(self)
+        alien_height, alien_width = alien.rect.size
+
+        alien.y = alien_height + 2 * alien_height * alien_number
+        alien.rect.y = alien.y
+        alien.rect.right = (self.ship.rect.width * 3) + (alien_width * col_number)
+        self.aliens.add(alien)
+        
 
     # A method to draw and update objects in the game.
     def _update_screen(self):
