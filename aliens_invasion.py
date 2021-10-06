@@ -39,6 +39,7 @@ class AliensInvasion:
             self._check_events()
             self.ship.update()
             self._update_bullets()
+            self._update_aliens()
             self._update_screen()
 
 
@@ -118,7 +119,27 @@ class AliensInvasion:
         alien.rect.y = alien.y
         alien.rect.right = (self.ship.rect.width * 3) + (alien_width * col_number)
         self.aliens.add(alien)
-        
+
+
+    def _check_fleet_edges(self):
+        """Respond appropriately if any aliesn have reached an edges."""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+
+    def _change_fleet_direction(self):
+        """Move the entire fleet to the left & then go up."""
+        for alien in self.aliens.sprites():
+            alien.rect.x += self.settings.fleet_speed_left
+        self.settings.fleet_direction *= -1
+
+
+    def _update_aliens(self):
+        """Update the positions of all aliens in the fleet."""
+        self._check_fleet_edges()
+        self.aliens.update()
 
     # A method to draw and update objects in the game.
     def _update_screen(self):
