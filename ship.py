@@ -16,10 +16,6 @@ class Ship(Sprite):
         self.image = pygame.transform.scale(self.img, (100, 88))
         self.rect = self.image.get_rect()
 
-        # # Get the size of an image to display as remaining ships
-        # self.small_image = pygame.transform.scale(self.image, (80, 68))
-        # self.small_rect = self.small_image.get_rect()
-
         # Position the ship
         self.positioning_ship()
 
