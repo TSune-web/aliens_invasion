@@ -1,4 +1,3 @@
-from time import perf_counter
 import pygame
 from pygame.sprite import Sprite
 
