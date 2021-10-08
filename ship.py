@@ -1,23 +1,36 @@
+from time import perf_counter
 import pygame
+from pygame.sprite import Sprite
 
-class Ship:
+class Ship(Sprite):
     """A class to manage the ship."""
 
     def __init__(self, ai_game):
         """Initialize the ship & set its starting position."""
+        super().__init__()
         self.screen = ai_game.screen
         self.settings = ai_game.settings
         self.screen_rect = ai_game.screen.get_rect()
 
-        self.image = pygame.image.load("images/ship.bmp")
+        self.img = pygame.image.load("images/ship.bmp")
+        self.image = pygame.transform.scale(self.img, (100, 88))
         self.rect = self.image.get_rect()
 
-        self.rect.midleft = self.screen_rect.midleft
+        # # Get the size of an image to display as remaining ships
+        # self.small_image = pygame.transform.scale(self.image, (80, 68))
+        # self.small_rect = self.small_image.get_rect()
 
-        self.y = float(self.rect.y)
+        # Position the ship
+        self.positioning_ship()
 
         self.moving_up = False
         self.moving_down = False
+
+
+    def positioning_ship(self):
+        """Center the ship on the screen."""
+        self.rect.midleft = self.screen_rect.midleft
+        self.y = float(self.rect.y)
 
 
     def update(self):

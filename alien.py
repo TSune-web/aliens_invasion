@@ -14,7 +14,7 @@ class Alien(Sprite):
         # Load the image of alien 1 and set its position.
         self.img = pygame.image.load("images/alien1.bmp")
         # Rescale the size of an alien
-        self.image = pygame.transform.scale(self.img, (60, 48))
+        self.image = pygame.transform.scale(self.img, (80, 68))
         self.rect = self.image.get_rect()
 
         # Set the position of an alien at the right top with a gap
@@ -36,7 +36,7 @@ class Alien(Sprite):
     def check_edges(self):
         """Return True if alien is at the edges of the screen."""
         screen_rect = self.screen.get_rect()
-        if (self.rect.bottom >= screen_rect.bottom) or (self.rect.top >= 0):
+        if (self.rect.bottom >= screen_rect.bottom) or (self.rect.top <= 0):
             return True
 
 
